@@ -1,0 +1,43 @@
+{
+  "name": "SafeConnect - Mạng Cứu Trợ & Thiện Nguyện",
+  "short_name": "SafeConnect",
+  "description": "Kết nối cứu trợ & thiện nguyện thời gian thực",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["social", "utilities", "health"],
+  "lang": "vi",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Gửi SOS",
+      "short_name": "SOS",
+      "description": "Gửi yêu cầu trợ giúp khẩn cấp",
+      "url": "/home",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Bản đồ",
+      "description": "Xem bản đồ cứu hộ",
+      "url": "/map",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
