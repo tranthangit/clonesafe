@@ -5,11 +5,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 
 const Login: React.FC = () => {
   const { login, isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -33,7 +35,7 @@ const Login: React.FC = () => {
     const { error } = await login(email, password);
 
     if (error) {
-      setError(error.message || 'Đăng nhập thất bại');
+      setError(error.message || t('auth.login_failed'));
     } else {
       navigate('/map');
     }
@@ -46,7 +48,7 @@ const Login: React.FC = () => {
       <div className="w-full max-w-md px-8 py-12 bg-white rounded-2xl shadow-xl">
         <div className="text-center mb-8">
           <img src="/logosc.png" alt="SafeConnect" className="h-12 mx-auto mb-2" />
-          <p className="text-gray-600">Chào mừng bạn quay trở lại</p>
+          <p className="text-gray-600">{t('auth.welcome_back')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -58,7 +60,7 @@ const Login: React.FC = () => {
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Email
+              {t('auth.email')}
             </Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -76,7 +78,7 @@ const Login: React.FC = () => {
 
           <div className="space-y-2">
             <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-              Mật khẩu
+              {t('auth.password')}
             </Label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -103,7 +105,7 @@ const Login: React.FC = () => {
 
           <div className="flex items-center justify-between text-sm">
             <Link to="/forgot-password" className="text-red-600 hover:text-red-500">
-              Quên mật khẩu?
+              {t('auth.forgot_password')}
             </Link>
           </div>
 
@@ -115,10 +117,10 @@ const Login: React.FC = () => {
             {loading ? (
               <div className="flex items-center">
                 <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Đang đăng nhập...
+                {t('auth.logging_in')}
               </div>
             ) : (
-              'Đăng nhập'
+              t('auth.login')
             )}
           </Button>
 
@@ -127,7 +129,7 @@ const Login: React.FC = () => {
               <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">hoặc tiếp tục với</span>
+              <span className="px-2 bg-white text-gray-500">{t('auth.or_continue_with')}</span>
             </div>
           </div>
 
@@ -139,8 +141,8 @@ const Login: React.FC = () => {
               onClick={() => {
                 // TODO: Implement Google login
                 toast({
-                  title: "Sắp ra mắt",
-                  description: "Tính năng đang được phát triển"
+                  title: t('common.coming_soon'),
+                  description: t('common.feature_in_development')
                 });
               }}
             >
@@ -154,8 +156,8 @@ const Login: React.FC = () => {
               onClick={() => {
                 // TODO: Implement Facebook login
                 toast({
-                  title: "Sắp ra mắt",
-                  description: "Tính năng đang được phát triển"
+                  title: t('common.coming_soon'),
+                  description: t('common.feature_in_development')
                 });
               }}
             >
@@ -166,14 +168,14 @@ const Login: React.FC = () => {
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          Chưa có tài khoản? 
+          {t('auth.dont_have_account')} 
           <Link to="/register" className="ml-1 text-blue-600 hover:text-blue-500 transition-colors duration-200">
-            Đăng ký ngay
+            {t('auth.register_now')}
           </Link>
         </p>
         <div className="mt-4 text-center">
           <Button variant="outline" asChild>
-            <Link to="/">Quay lại Trang chủ</Link>
+            <Link to="/">{t('auth.back_to_home')}</Link>
           </Button>
         </div>
       </div>
