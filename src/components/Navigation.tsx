@@ -1,14 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, MapPin, Users, Bell, User } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const Navigation: React.FC = () => {
+  const { t } = useTranslation();
+  
   const navItems = [
-    { to: '/home', icon: Home, label: 'Trang chủ' },
-    { to: '/map', icon: MapPin, label: 'Bản đồ' },
-    { to: '/community', icon: Users, label: 'Cộng đồng' },
-    { to: '/support-points', icon: Bell, label: 'Điểm hỗ trợ' },
-    { to: '/profile', icon: User, label: 'Cá nhân' }
+    { to: '/home', icon: Home, label: t('nav.home') },
+    { to: '/map', icon: MapPin, label: t('nav.map') },
+    { to: '/community', icon: Users, label: t('nav.community') },
+    { to: '/support-points', icon: Bell, label: t('nav.support_points') },
+    { to: '/profile', icon: User, label: t('nav.profile') }
   ];
 
   return (

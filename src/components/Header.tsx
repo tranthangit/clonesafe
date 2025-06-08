@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +9,7 @@ import NotificationBell from './NotificationBell';
 
 const Header: React.FC = () => {
   const { profile } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
@@ -36,14 +38,14 @@ const Header: React.FC = () => {
                               />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Đã xác minh</p>
+                              <p>{t('profile.verified')}</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                   )}
                 </div>
                 {profile.is_volunteer_ready && (
-                  <p className="text-xs text-green-600">Sẵn sàng giúp đỡ</p>
+                  <p className="text-xs text-green-600">{t('home.ready_to_help')}</p>
                 )}
               </div>
               <Avatar className="w-8 h-8">

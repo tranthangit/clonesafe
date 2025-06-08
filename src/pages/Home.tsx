@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { AlertTriangle, MapPin, User, History, Users, Image as ImageIcon, Cloud, Sun, CloudRain, PhoneCall, Trash2 as LucideTrash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -49,33 +50,35 @@ const SOSFormContentComponent: React.FC<SOSFormContentProps> = ({
   setSOSImages,
   handleClearForm
 }) => {
+  const { t } = useTranslation();
+  
   return (
     <div className="space-y-3">
       <div>
-        <Label htmlFor="type" className="text-red-600 text-sm">Loại hỗ trợ cần thiết *</Label>
+        <Label htmlFor="type" className="text-red-600 text-sm">{t('sos.support_type_required')}</Label>
         <Select value={sosForm.type} onValueChange={(value) => setSOSForm(prev => ({ ...prev, type: value }))}>
           <SelectTrigger className="w-full h-9">
-            <SelectValue placeholder="Chọn loại hỗ trợ" />
+            <SelectValue placeholder={t('sos.select_support_type')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="Y tế khẩn cấp">🚑 Y tế khẩn cấp</SelectItem>
-            <SelectItem value="Sơ tán">🏃‍♂️ Sơ tán khẩn cấp</SelectItem>
-            <SelectItem value="Cứu hộ">⛑️ Cứu hộ</SelectItem>
-            <SelectItem value="Thực phẩm">🍞 Thực phẩm</SelectItem>
-            <SelectItem value="Nước uống">💧 Nước sạch</SelectItem>
-            <SelectItem value="Chỗ ở">🏠 Chỗ ở tạm thời</SelectItem>
-            <SelectItem value="Khác">❓ Khác</SelectItem>
+            <SelectItem value="Y tế khẩn cấp">🚑 {t('sos.medical_emergency')}</SelectItem>
+            <SelectItem value="Sơ tán">🏃‍♂️ {t('sos.evacuation')}</SelectItem>
+            <SelectItem value="Cứu hộ">⛑️ {t('sos.rescue')}</SelectItem>
+            <SelectItem value="Thực phẩm">🍞 {t('sos.food')}</SelectItem>
+            <SelectItem value="Nước uống">💧 {t('sos.water')}</SelectItem>
+            <SelectItem value="Chỗ ở">🏠 {t('sos.shelter')}</SelectItem>
+            <SelectItem value="Khác">❓ {t('sos.other')}</SelectItem>
           </SelectContent>
         </Select>
         {sosForm.type === 'Y tế khẩn cấp' && (
           <p className="mt-1.5 text-xs text-gray-600 dark:text-gray-400">
-            💡 Bạn có thể gọi tới tổng đài <a href='tel:115' className='text-blue-500 hover:text-blue-600 hover:underline font-medium'>115</a> để được cấp cứu kịp thời.
+            💡 {t('sos.medical_tip')} <a href='tel:115' className='text-blue-500 hover:text-blue-600 hover:underline font-medium'>115</a> {t('sos.for_emergency')}.
           </p>
         )}
       </div>
 
       <div>
-        <Label htmlFor="manual_address" className="text-sm">Địa chỉ chi tiết</Label>
+        <Label htmlFor="manual_address" className="text-sm">{t('sos.detailed_address')}</Label>
         {servicesApiKey ? (
           <div className="w-full h-9 text-sm">
             <GoongMapSearch
@@ -90,7 +93,7 @@ const SOSFormContentComponent: React.FC<SOSFormContentProps> = ({
         ) : (
           <Input
             id="manual_address"
-            placeholder="Số nhà, đường, phường/xã..."
+            placeholder={t('sos.address_placeholder')}
             value={sosForm.manual_address}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSOSForm(prev => ({ ...prev, manual_address: e.target.value }))}
             className="w-full h-9 text-sm"
@@ -99,10 +102,10 @@ const SOSFormContentComponent: React.FC<SOSFormContentProps> = ({
       </div>
 
       <div>
-        <Label htmlFor="description" className="text-red-600 text-sm">Mô tả tình huống *</Label>
+        <Label htmlFor="description" className="text-red-600 text-sm">{t('sos.situation_description_required')}</Label>
         <Textarea
           id="description"
-          placeholder="Mô tả chi tiết tình huống cần hỗ trợ..."
+          placeholder={t('sos.description_placeholder')}
           value={sosForm.description}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setSOSForm(prev => ({ ...prev, description: e.target.value }))}
           className="w-full resize-none h-16 text-sm"
@@ -111,21 +114,21 @@ const SOSFormContentComponent: React.FC<SOSFormContentProps> = ({
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label htmlFor="urgency" className="text-red-600 text-sm">Mức độ khẩn cấp *</Label>
+          <Label htmlFor="urgency" className="text-red-600 text-sm">{t('sos.urgency_level_required')}</Label>
           <Select value={sosForm.urgency} onValueChange={(value) => setSOSForm(prev => ({ ...prev, urgency: value }))}>
             <SelectTrigger className="w-full h-9">
-              <SelectValue placeholder="Chọn mức độ" />
+              <SelectValue placeholder={t('sos.select_urgency')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Khẩn cấp">🔴 Khẩn cấp</SelectItem>
-              <SelectItem value="Trung bình">🟡 Trung bình</SelectItem>
-              <SelectItem value="Thấp">🟢 Thấp</SelectItem>
+              <SelectItem value="Khẩn cấp">🔴 {t('sos.critical')}</SelectItem>
+              <SelectItem value="Trung bình">🟡 {t('sos.medium')}</SelectItem>
+              <SelectItem value="Thấp">🟢 {t('sos.low')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div>
-          <Label htmlFor="people" className="text-sm">Số người ảnh hưởng</Label>
+          <Label htmlFor="people" className="text-sm">{t('sos.people_affected')}</Label>
           <Input
             id="people"
             type="number"
@@ -138,7 +141,7 @@ const SOSFormContentComponent: React.FC<SOSFormContentProps> = ({
       </div>
 
       <div>
-        <Label className="text-sm">Hình ảnh hiện trường</Label>
+        <Label className="text-sm">{t('sos.scene_images')}</Label>
         <div className="mt-1">
           <ImageUpload 
             onImagesChange={(images) => {
@@ -158,7 +161,7 @@ const SOSFormContentComponent: React.FC<SOSFormContentProps> = ({
           type="button"
         >
           <LucideTrash2 className="w-4 h-4 mr-2" />
-          Xóa biểu mẫu
+          {t('sos.clear_form')}
         </Button>
         <Button 
           onClick={handleSOSSubmit} 
@@ -166,7 +169,7 @@ const SOSFormContentComponent: React.FC<SOSFormContentProps> = ({
           type="button"
         >
           <AlertTriangle className="w-4 h-4 mr-2" />
-          Gửi yêu cầu SOS ngay
+          {t('sos.send_request')}
         </Button>
       </div>
     </div>
@@ -188,26 +191,27 @@ interface SosRequest {
   user_id: string;
 }
 
-const getRequestStatusInfo = (status: string | null) => {
+const getRequestStatusInfo = (status: string | null, t: (key: string) => string) => {
   switch (status) {
     case 'completed':
-      return { text: 'Hoàn thành', variant: 'default' as const, className: 'bg-green-100 text-green-800 border-green-300' };
+      return { text: t('status.completed'), variant: 'default' as const, className: 'bg-green-100 text-green-800 border-green-300' };
     case 'processing':
     case 'in_progress':
-      return { text: 'Đang xử lý', variant: 'secondary' as const, className: 'bg-blue-100 text-blue-800 border-blue-300' };
+      return { text: t('status.processing'), variant: 'secondary' as const, className: 'bg-blue-100 text-blue-800 border-blue-300' };
     case 'pending':
-      return { text: 'Đang chờ', variant: 'secondary' as const, className: 'bg-yellow-100 text-yellow-800 border-yellow-300' };
+      return { text: t('status.pending'), variant: 'secondary' as const, className: 'bg-yellow-100 text-yellow-800 border-yellow-300' };
     case 'cancelled':
-      return { text: 'Đã hủy', variant: 'outline' as const, className: 'bg-gray-100 text-gray-800 border-gray-300' };
+      return { text: t('status.cancelled'), variant: 'outline' as const, className: 'bg-gray-100 text-gray-800 border-gray-300' };
     case 'failed':
-      return { text: 'Thất bại', variant: 'destructive' as const, className: 'bg-red-100 text-red-800 border-red-300' };
+      return { text: t('status.failed'), variant: 'destructive' as const, className: 'bg-red-100 text-red-800 border-red-300' };
     default:
-      return { text: status || 'Không rõ', variant: 'outline' as const, className: 'bg-gray-100 text-gray-700 border-gray-300' };
+      return { text: status || t('status.unknown'), variant: 'outline' as const, className: 'bg-gray-100 text-gray-700 border-gray-300' };
   }
 };
 
 const Home: React.FC = () => {
   const { profile, toggleVolunteerStatus } = useAuth();
+  const { t } = useTranslation();
   const { toast } = useToast();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -237,8 +241,8 @@ const Home: React.FC = () => {
     setSOSForm(sosFormInitialState);
     setSOSImages([]);
     toast({
-      title: "Đã xóa biểu mẫu",
-      description: "Thông tin bạn nhập đã được xóa."
+      title: t('sos.form_cleared'),
+      description: t('sos.form_cleared_desc')
     });
   };
 
@@ -344,14 +348,14 @@ const Home: React.FC = () => {
 
   const handleSOSSubmit = async () => {
     const missingFields = [];
-    if (!sosForm.type) missingFields.push('Loại hỗ trợ');
-    if (!sosForm.description) missingFields.push('Mô tả tình huống');
-    if (!sosForm.urgency) missingFields.push('Mức độ khẩn cấp');
+    if (!sosForm.type) missingFields.push(t('sos.support_type'));
+    if (!sosForm.description) missingFields.push(t('sos.situation_description'));
+    if (!sosForm.urgency) missingFields.push(t('sos.urgency_level'));
 
     if (missingFields.length > 0) {
       toast({
-        title: "Thông tin còn thiếu",
-        description: `Vui lòng điền các trường bắt buộc: ${missingFields.join(', ')}.`, 
+        title: t('sos.missing_info'),
+        description: `${t('sos.please_fill_required')}: ${missingFields.join(', ')}.`, 
         variant: "destructive"
       });
       return;
@@ -359,8 +363,8 @@ const Home: React.FC = () => {
 
     if (!profile) {
       toast({
-        title: "Lỗi xác thực",
-        description: "Vui lòng đăng nhập để gửi yêu cầu SOS.",
+        title: t('sos.auth_error'),
+        description: t('sos.login_required'),
         variant: "destructive"
       });
       navigate('/login');
@@ -369,8 +373,8 @@ const Home: React.FC = () => {
 
     if (!userLocation) {
       toast({
-        title: "Lỗi vị trí",
-        description: "Không thể xác định vị trí hiện tại của bạn. Vui lòng thử lại.",
+        title: t('sos.location_error'),
+        description: t('sos.location_error_desc'),
         variant: "destructive"
       });
       return;
@@ -413,16 +417,16 @@ const Home: React.FC = () => {
       if (error) {
         console.error('Error creating SOS request:', error);
         toast({
-          title: "Lỗi",
-          description: `Không thể gửi yêu cầu SOS: ${error.message}`,
+          title: t('common.error'),
+          description: `${t('sos.cannot_send')}: ${error.message}`,
           variant: "destructive"
         });
         return;
       }
 
       toast({
-        title: "Thành công",
-        description: "Yêu cầu SOS đã được gửi thành công!"
+        title: t('common.success'),
+        description: t('sos.sent_successfully')
       });
 
       setSOSForm({ 
@@ -439,8 +443,8 @@ const Home: React.FC = () => {
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({
-        title: "Lỗi",
-        description: "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
+        title: t('common.error'),
+        description: t('sos.unexpected_error'),
         variant: "destructive"
       });
     }
@@ -449,17 +453,17 @@ const Home: React.FC = () => {
   const handleToggleVolunteer = async () => {
     if (!profile) {
       toast({
-        title: "Yêu cầu đăng nhập",
-        description: "Vui lòng đăng nhập để bật chế độ tình nguyện.",
+        title: t('volunteer.login_required'),
+        description: t('volunteer.login_required_desc'),
         variant: "destructive",
       });
     } else {
       await toggleVolunteerStatus();
       toast({
-        title: profile?.is_volunteer_ready ? "Đã tắt chế độ tình nguyện" : "Đã bật chế độ tình nguyện",
+        title: profile?.is_volunteer_ready ? t('volunteer.turned_off') : t('volunteer.turned_on'),
         description: profile?.is_volunteer_ready 
-          ? "Bạn sẽ không nhận được thông báo SOS mới" 
-          : "Bạn sẽ nhận được thông báo khi có SOS gần bạn"
+          ? t('volunteer.no_notifications') 
+          : t('volunteer.will_receive_notifications')
       });
     }
   };
@@ -478,7 +482,7 @@ const Home: React.FC = () => {
               </div>
               <h2 className="text-lg font-semibold">
                 <TextShimmer className="inline-block [--base-color:theme(colors.red.600)] white:[--base-color:theme(colors.red.500)]">
-                  {`Xin chào ${profile?.name?.split(' ').slice(-1)[0] || 'Bạn'}!`}
+                  {`${t('home.greeting')} ${profile?.name?.split(' ').slice(-1)[0] || t('common.you')}!`}
                 </TextShimmer>
               </h2>
             </div>
@@ -489,7 +493,7 @@ const Home: React.FC = () => {
                   {getWeatherIcon(weather.icon)}
                   <span className="font-medium text-blue-600">{weather.temperature}°C</span>
                   <span className="text-gray-600">{weather.description}</span>
-                  <span className="text-gray-500">• {weather.humidity}% độ ẩm</span>
+                  <span className="text-gray-500">• {weather.humidity}% {t('weather.humidity')}</span>
                 </div>
               )}
             </div>
@@ -501,7 +505,7 @@ const Home: React.FC = () => {
             {locationLoading ? (
               <div className="flex items-center gap-1 text-gray-500">
                 <MapPin className="w-4 h-4 animate-pulse" />
-                <span className="text-sm">Đang tải vị trí...</span>
+                <span className="text-sm">{t('location.loading')}</span>
               </div>
             ) : currentLocation ? (
               <div className="flex items-center gap-1 text-red-600">
@@ -519,10 +523,10 @@ const Home: React.FC = () => {
         {/* Emergency Section */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Emergency help needed?
+            {t('home.emergency_help')}
           </h1>
           <p className="text-gray-600 mb-8">
-            Just hold the button to call
+            {t('home.call_button')}
           </p>
           
           {/* Emergency Button - Mobile uses Drawer, Desktop uses Dialog */}
@@ -542,10 +546,10 @@ const Home: React.FC = () => {
                       className="absolute inset-0 z-10 flex flex-col items-center justify-center w-full h-full rounded-full bg-red-500 text-white shadow-xl focus:outline-none cursor-pointer"
                       whileTap={{ scale: 0.95 }}
                       whileHover={{ scale: 1.05, backgroundColor: "#dc2626" }} /* bg-red-600 */
-                      aria-label="Yêu cầu SOS"
+                      aria-label={t('home.sos_button')}
                     >
                       <PhoneCall size={36} className="mb-1" />
-                      <span className="text-sm font-semibold tracking-wider">SOS</span>
+                      <span className="text-sm font-semibold tracking-wider">{t('home.sos_button')}</span>
                     </motion.button>
                     <motion.div
                       initial={{ scale: 1, opacity: 0.6 }}
@@ -555,13 +559,13 @@ const Home: React.FC = () => {
                     />
                   </div>
                   <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">
-                    Bấm để yêu cầu hỗ trợ
+                    {t('home.tap_for_help')}
                   </p>
                 </div>
               </DrawerTrigger>
               <DrawerContent className="max-h-[85vh]">
                 <DrawerHeader className="pb-2">
-                  <DrawerTitle>Gửi yêu cầu hỗ trợ khẩn cấp (SOS)</DrawerTitle>
+                  <DrawerTitle>{t('sos.send_emergency_request')}</DrawerTitle>
                 </DrawerHeader>
                 <div className="p-4 pb-0">
                   <SOSFormContentComponent
@@ -591,10 +595,10 @@ const Home: React.FC = () => {
                       className="absolute inset-0 z-10 flex flex-col items-center justify-center w-full h-full rounded-full bg-red-500 text-white shadow-xl focus:outline-none cursor-pointer"
                       whileTap={{ scale: 0.95 }}
                       whileHover={{ scale: 1.05, backgroundColor: "#dc2626" }} /* bg-red-600 */
-                      aria-label="Yêu cầu SOS"
+                      aria-label={t('home.sos_button')}
                     >
                       <PhoneCall size={36} className="mb-1" />
-                      <span className="text-sm font-semibold tracking-wider">SOS</span>
+                      <span className="text-sm font-semibold tracking-wider">{t('home.sos_button')}</span>
                     </motion.button>
                     <motion.div
                       initial={{ scale: 1, opacity: 0.6 }}
@@ -604,14 +608,14 @@ const Home: React.FC = () => {
                     />
                   </div>
                   <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">
-                    Bấm để yêu cầu hỗ trợ
+                    {t('home.tap_for_help')}
                   </p>
                 </div>
               </DialogTrigger>
               <DialogContent className="mx-2 max-w-[calc(100vw-1rem)] sm:max-w-lg h-fit max-h-[95vh] rounded-t-3xl sm:rounded-lg border-0 p-0">
                 <div className="p-4 sm:p-6 h-full flex flex-col">
                   <DialogHeader>
-                    <DialogTitle>Gửi yêu cầu hỗ trợ khẩn cấp (SOS)</DialogTitle>
+                    <DialogTitle>{t('sos.send_emergency_request')}</DialogTitle>
                   </DialogHeader>
                   <SOSFormContentComponent
                     sosForm={sosForm}
@@ -630,9 +634,9 @@ const Home: React.FC = () => {
         
         <div className="mb-8">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Not sure what to do?
+            {t('home.not_sure')}
           </h3>
-          <p className="text-sm text-gray-600 mb-4">Pick the subject to chat</p>
+          <p className="text-sm text-gray-600 mb-4">{t('home.pick_subject')}</p>
           
           <div className="grid grid-cols-1 gap-3">
             <Button
@@ -644,7 +648,7 @@ const Home: React.FC = () => {
                 <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Users className="w-4 h-4 text-blue-600" />
                 </div>
-                <span className="text-gray-900">Tham gia cộng đồng</span>
+                <span className="text-gray-900">{t('home.join_community')}</span>
               </div>
             </Button>
 
@@ -657,7 +661,7 @@ const Home: React.FC = () => {
                 <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                   <MapPin className="w-4 h-4 text-green-600" />
                 </div>
-                <span className="text-gray-900">Tìm điểm hỗ trợ</span>
+                <span className="text-gray-900">{t('home.find_support')}</span>
               </div>
             </Button>
           </div>
@@ -671,9 +675,9 @@ const Home: React.FC = () => {
               <div className="flex items-center gap-3">
                 <User className="w-5 h-5 text-blue-600" />
                 <div>
-                  <h4 className="font-medium text-gray-900">Chế độ tình nguyện</h4>
+                  <h4 className="font-medium text-gray-900">{t('home.volunteer_mode')}</h4>
                   <p className="text-sm text-gray-600">
-                    {profile?.is_volunteer_ready ? 'Đang sẵn sàng giúp đỡ' : 'Đã tắt'}
+                    {profile?.is_volunteer_ready ? t('home.ready_to_help') : t('home.turned_off')}
                   </p>
                 </div>
               </div>
@@ -683,7 +687,7 @@ const Home: React.FC = () => {
                 size="sm"
                 className={profile?.is_volunteer_ready ? 'bg-emerald-600 hover:bg-emerald-700' : ''}
               >
-                {profile?.is_volunteer_ready ? 'Tắt' : 'Bật'}
+                {profile?.is_volunteer_ready ? t('home.turn_off') : t('home.turn_on')}
               </Button>
             </div>
           </div>
@@ -693,7 +697,7 @@ const Home: React.FC = () => {
             <div className="bg-white rounded-xl p-4 border border-gray-200">
               <div className="flex items-center gap-2 mb-3">
                 <History className="w-5 h-5 text-orange-600" />
-                <h4 className="font-medium text-gray-900">Yêu cầu gần đây</h4>
+                <h4 className="font-medium text-gray-900">{t('home.recent_requests')}</h4>
               </div>
               {recentRequests.length > 0 ? (
                 <div className="space-y-2">
@@ -706,7 +710,7 @@ const Home: React.FC = () => {
                         </p>
                       </div>
                       {(() => {
-                        const statusInfo = getRequestStatusInfo(request.status);
+                        const statusInfo = getRequestStatusInfo(request.status, t);
                         return (
                           <Badge variant={statusInfo.variant} className={statusInfo.className}>
                             {statusInfo.text}
@@ -717,7 +721,7 @@ const Home: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">Chưa có yêu cầu nào</p>
+                <p className="text-sm text-gray-500">{t('home.no_requests')}</p>
               )}
               <Button 
                 variant="ghost" 
@@ -725,7 +729,7 @@ const Home: React.FC = () => {
                 className="w-full mt-2"
                 onClick={() => navigate('/history')}
               >
-                Xem tất cả
+                {t('home.view_all')}
               </Button>
             </div>
           )}
@@ -735,7 +739,7 @@ const Home: React.FC = () => {
             <div className="bg-white rounded-xl p-4 border border-gray-200">
               <div className="flex items-center gap-2 mb-3">
                 <Users className="w-5 h-5 text-green-600" />
-                <h4 className="font-medium text-gray-900">Đã giúp đỡ gần đây</h4>
+                <h4 className="font-medium text-gray-900">{t('home.recent_helps')}</h4>
               </div>
               {recentHelps.length > 0 ? (
                 <div className="space-y-2">
@@ -748,13 +752,13 @@ const Home: React.FC = () => {
                         </p>
                       </div>
                       <Badge variant="default" className="bg-green-600">
-                        Đã giúp
+                        {t('home.helped')}
                       </Badge>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">Chưa giúp đỡ ai</p>
+                <p className="text-sm text-gray-500">{t('home.no_helps')}</p>
               )}
               <Button 
                 variant="ghost" 
@@ -762,7 +766,7 @@ const Home: React.FC = () => {
                 className="w-full mt-2"
                 onClick={() => navigate('/history')}
               >
-                Xem tất cả
+                {t('home.view_all')}
               </Button>
             </div>
           )}
@@ -775,7 +779,7 @@ const Home: React.FC = () => {
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
           >
             <MapPin className="w-4 h-4 mr-2" />
-            Xem bản đồ cứu hộ
+            {t('home.view_rescue_map')}
           </Button>
         </div>
       </div>
