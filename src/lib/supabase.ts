@@ -13,7 +13,7 @@ export const supabase = createClient<Database>(
   supabaseAnonKey || ''
 );
 
-export type User = {
+type User = {
   id: string;
   email: string;
   full_name: string;
@@ -24,7 +24,7 @@ export type User = {
   created_at: string;
 };
 
-export type SosRequest = {
+type SosRequest = {
   id: string;
   user_id: string;
   user: User;
@@ -44,7 +44,7 @@ export type SosRequest = {
   updated_at: string;
 };
 
-export type SupportPoint = {
+type SupportPoint = {
   id: string;
   name: string;
   description: string;
@@ -70,7 +70,7 @@ export type SupportPoint = {
   updated_at: string;
 };
 
-export type ChatMessage = {
+type ChatMessage = {
   id: string;
   sos_request_id: string;
   sender_id: string;
@@ -78,7 +78,7 @@ export type ChatMessage = {
   created_at: string;
 };
 
-export type CommunityPost = {
+type CommunityPost = {
   id: string;
   user_id: string;
   user: User;
@@ -91,7 +91,7 @@ export type CommunityPost = {
   updated_at: string;
 };
 
-export type PostComment = {
+type PostComment = {
   id: string;
   post_id: string;
   user_id: string;
