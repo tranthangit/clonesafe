@@ -64,8 +64,8 @@ const Register: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-blue-50">
         <div className="w-full max-w-md px-8 py-12 bg-white rounded-2xl shadow-xl text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            <svg className="w-8 h-8 text-green-600\" fill="none\" stroke="currentColor\" viewBox="0 0 24 24">
+              <path strokeLinecap="round\" strokeLinejoin="round\" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('auth.register_success')}</h2>
@@ -97,7 +97,7 @@ const Register: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <Alert variant="destructive" className="animate-in fade-in-50">
+            <Alert variant="destructive\" className="animate-in fade-in-50">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
