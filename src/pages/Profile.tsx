@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   User, 
@@ -18,12 +19,12 @@ import {
   MoreHorizontal,
   MapPin,
   History, 
-  CheckCircle // Added CheckCircle icon
+  CheckCircle
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import AvatarUpload from '@/components/AvatarUpload';
 import ChangePassword from '@/components/ChangePassword';
-import { useNavigate } from 'react-router-dom'; // Added useNavigate
+import { useNavigate } from 'react-router-dom';
 
 interface UserStats {
   sos_requests: number;
@@ -33,8 +34,9 @@ interface UserStats {
 
 const Profile: React.FC = () => {
   const { profile, logout, updateProfile } = useAuth();
+  const { t, language, setLanguage } = useTranslation();
   const { toast } = useToast();
-  const navigate = useNavigate(); // Initialized navigate
+  const navigate = useNavigate();
   const [stats, setStats] = useState<UserStats>({ sos_requests: 0, help_provided: 0, average_rating: 0 });
   const [loading, setLoading] = useState(true);
   const [showChangePassword, setShowChangePassword] = useState(false);
@@ -114,7 +116,7 @@ const Profile: React.FC = () => {
       
       if (error) {
         toast({
-          title: "Lỗi",
+          title: t('common.error'),
           description: "Không thể cập nhật ảnh đại diện",
           variant: "destructive"
         });
@@ -122,7 +124,7 @@ const Profile: React.FC = () => {
     } catch (error) {
       console.error('Error updating avatar:', error);
       toast({
-        title: "Lỗi",
+        title: t('common.error'),
         description: "Có lỗi xảy ra khi cập nhật ảnh đại diện",
         variant: "destructive"
       });
@@ -135,20 +137,20 @@ const Profile: React.FC = () => {
       
       if (error) {
         toast({
-          title: "Lỗi",
+          title: t('common.error'),
           description: "Không thể cập nhật hồ sơ",
           variant: "destructive"
         });
       } else {
         toast({
-          title: "Thành công",
+          title: t('common.success'),
           description: "Đã cập nhật hồ sơ"
         });
       }
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
-        title: "Lỗi",
+        title: t('common.error'),
         description: "Có lỗi xảy ra khi cập nhật hồ sơ",
         variant: "destructive"
       });
@@ -159,26 +161,33 @@ const Profile: React.FC = () => {
     logout();
   };
 
+  const handleLanguageChange = (newLanguage: 'vi' | 'en') => {
+    setLanguage(newLanguage);
+    toast({
+      title: t('common.success'),
+      description: t('language.change_success')
+    });
+  };
+
   const handleMenuItemClick = (action: string) => {
     switch (action) {
       case 'password':
         setShowChangePassword(true);
         break;
-      case 'orders': // Added case for 'orders'
+      case 'orders':
         navigate('/history');
         break;
       default:
-        // Handle other menu items later
         break;
     }
   };
 
   const menuItems = [
-    { icon: User, label: 'Hồ sơ của tôi', action: 'profile' },
-    { icon: History, label: 'Lịch sử hoạt động', action: 'orders' },
-    { icon: RotateCcw, label: 'Hoàn tiền', action: 'refund' },
-    { icon: Lock, label: 'Đổi mật khẩu', action: 'password' },
-    { icon: Globe, label: 'Đổi ngôn ngữ', action: 'language' },
+    { icon: User, label: t('profile.my_profile'), action: 'profile' },
+    { icon: History, label: t('profile.activity_history'), action: 'orders' },
+    { icon: RotateCcw, label: t('profile.refund'), action: 'refund' },
+    { icon: Lock, label: t('profile.change_password'), action: 'password' },
+    { icon: Globe, label: t('profile.change_language'), action: 'language' },
   ];
 
   if (!profile) {
@@ -186,7 +195,7 @@ const Profile: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Đang tải thông tin người dùng...</p>
+          <p className="text-gray-600">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -204,7 +213,7 @@ const Profile: React.FC = () => {
 
       {/* Header */}
       <div className="relative z-10 flex justify-between items-center p-6 text-white">
-        <h1 className="text-xl font-semibold">Cá nhân</h1>
+        <h1 className="text-xl font-semibold">{t('profile.title')}</h1>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
           <MoreHorizontal size={24} />
         </Button>
@@ -228,7 +237,7 @@ const Profile: React.FC = () => {
         </div>
         <div className="text-green-100 text-sm text-center mt-1 space-y-0.5 px-4 w-full max-w-xs sm:max-w-sm md:max-w-md">
           {profile?.bio && (
-            <p className="truncate\" title={profile.bio}>
+            <p className="truncate" title={profile.bio}>
               {profile.bio}
             </p>
           )}
@@ -246,7 +255,7 @@ const Profile: React.FC = () => {
 
       {/* Account Overview Card */}
       <div className="relative z-10 bg-white rounded-t-3xl flex-1 p-6 mt-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Tổng quan tài khoản</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">{t('profile.account_overview')}</h3>
         
         <div className="space-y-1">
           {menuItems.map((item, index) => (
@@ -267,11 +276,11 @@ const Profile: React.FC = () => {
                   
                   <DrawerContent className="max-h-[90vh]">
                     <DrawerHeader>
-                      <DrawerTitle>Chỉnh sửa hồ sơ</DrawerTitle>
+                      <DrawerTitle>{t('profile.edit_profile')}</DrawerTitle>
                     </DrawerHeader>
                     <div className="p-4 space-y-4 overflow-y-auto">
                       <div>
-                        <Label htmlFor="name">Họ và tên</Label>
+                        <Label htmlFor="name">{t('profile.full_name')}</Label>
                         <Input
                           id="name"
                           value={editProfile.name}
@@ -280,7 +289,7 @@ const Profile: React.FC = () => {
                       </div>
 
                       <div>
-                        <Label htmlFor="bio">Tiểu sử</Label>
+                        <Label htmlFor="bio">{t('profile.bio')}</Label>
                         <Textarea
                           id="bio"
                           value={editProfile.bio}
@@ -291,7 +300,7 @@ const Profile: React.FC = () => {
                       </div>
 
                       <div>
-                        <Label htmlFor="location">Nơi ở</Label>
+                        <Label htmlFor="location">{t('profile.location')}</Label>
                         <Input
                           id="location"
                           value={editProfile.location}
@@ -301,21 +310,21 @@ const Profile: React.FC = () => {
                       </div>
 
                       <div>
-                        <Label htmlFor="maritalStatus">Tình trạng hôn nhân</Label>
+                        <Label htmlFor="maritalStatus">{t('profile.marital_status')}</Label>
                         <Select value={editProfile.marital_status} onValueChange={(value) => setEditProfile(prev => ({ ...prev, marital_status: value }))}>
                           <SelectTrigger>
                             <SelectValue placeholder="Chọn tình trạng" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="single">Độc thân</SelectItem>
-                            <SelectItem value="married">Đã kết hôn</SelectItem>
-                            <SelectItem value="other">Khác</SelectItem>
+                            <SelectItem value="single">{t('marital_status.single')}</SelectItem>
+                            <SelectItem value="married">{t('marital_status.married')}</SelectItem>
+                            <SelectItem value="other">{t('marital_status.other')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
                       <div>
-                        <Label htmlFor="birthDate">Ngày sinh</Label>
+                        <Label htmlFor="birthDate">{t('profile.birth_date')}</Label>
                         <Input
                           id="birthDate"
                           type="date"
@@ -325,20 +334,56 @@ const Profile: React.FC = () => {
                       </div>
 
                       <div>
-                        <Label htmlFor="privacy">Quyền riêng tư</Label>
+                        <Label htmlFor="privacy">{t('profile.privacy')}</Label>
                         <Select value={editProfile.privacy_level} onValueChange={(value) => setEditProfile(prev => ({ ...prev, privacy_level: value }))}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="public">Công khai</SelectItem>
-                            <SelectItem value="private">Chỉ mình tôi</SelectItem>
+                            <SelectItem value="public">{t('privacy.public')}</SelectItem>
+                            <SelectItem value="private">{t('privacy.private')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
                       <Button onClick={handleSaveProfile} className="w-full">
-                        Lưu thay đổi
+                        {t('profile.save_changes')}
+                      </Button>
+                    </div>
+                  </DrawerContent>
+                </Drawer>
+              ) : item.action === 'language' ? (
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <div className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
+                      <div className="flex items-center space-x-4">
+                        <div className="p-2 rounded-lg bg-pink-100">
+                          <item.icon size={20} className="text-pink-600" />
+                        </div>
+                        <span className="font-medium text-gray-900">{item.label}</span>
+                      </div>
+                      <ChevronRight size={20} className="text-gray-400" />
+                    </div>
+                  </DrawerTrigger>
+                  
+                  <DrawerContent className="max-h-[50vh]">
+                    <DrawerHeader>
+                      <DrawerTitle>{t('profile.change_language')}</DrawerTitle>
+                    </DrawerHeader>
+                    <div className="p-4 space-y-3">
+                      <Button
+                        variant={language === 'vi' ? 'default' : 'outline'}
+                        onClick={() => handleLanguageChange('vi')}
+                        className="w-full justify-start"
+                      >
+                        🇻🇳 {t('language.vietnamese')}
+                      </Button>
+                      <Button
+                        variant={language === 'en' ? 'default' : 'outline'}
+                        onClick={() => handleLanguageChange('en')}
+                        className="w-full justify-start"
+                      >
+                        🇺🇸 {t('language.english')}
                       </Button>
                     </div>
                   </DrawerContent>
@@ -373,7 +418,7 @@ const Profile: React.FC = () => {
 
         {/* Stats Section */}
         <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <h4 className="font-semibold text-gray-900 mb-3">Thống kê hoạt động</h4>
+          <h4 className="font-semibold text-gray-900 mb-3">{t('profile.activity_stats')}</h4>
           {loading ? (
             <div className="flex justify-center py-4">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-red-600"></div>
@@ -382,17 +427,17 @@ const Profile: React.FC = () => {
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <p className="text-lg font-bold text-red-600">{stats.sos_requests}</p>
-                <p className="text-xs text-gray-600">Yêu cầu SOS</p>
+                <p className="text-xs text-gray-600">{t('profile.sos_requests')}</p>
               </div>
               <div>
                 <p className="text-lg font-bold text-green-600">{stats.help_provided}</p>
-                <p className="text-xs text-gray-600">Lần giúp đỡ</p>
+                <p className="text-xs text-gray-600">{t('profile.help_provided')}</p>
               </div>
               <div>
                 <p className="text-lg font-bold text-yellow-600">
-                  {stats.average_rating > 0 ? `${stats.average_rating.toFixed(1)}/5` : 'Chưa có'}
+                  {stats.average_rating > 0 ? `${stats.average_rating.toFixed(1)}/5` : t('profile.no_rating')}
                 </p>
-                <p className="text-xs text-gray-600">Đánh giá TB</p>
+                <p className="text-xs text-gray-600">{t('profile.average_rating')}</p>
               </div>
             </div>
           )}
@@ -405,7 +450,7 @@ const Profile: React.FC = () => {
             variant="outline" 
             className="w-full text-red-600 border-red-600 hover:bg-red-50"
           >
-            Đăng xuất
+            {t('auth.logout')}
           </Button>
         </div>
       </div>

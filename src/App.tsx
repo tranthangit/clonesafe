@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Layout from "./components/Layout";
@@ -37,60 +38,62 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
-            {shouldShowSplash ? (
-              <SplashScreen onFinish={() => setShowSplash(false)} />
-            ) : (
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                
-                {/* Admin Routes */}
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="users" element={<AdminUsers />} />
-                  <Route path="sos-requests" element={<AdminSOSRequests />} />
-                  <Route path="support-points" element={<AdminSupportPoints />} />
-                  <Route path="community" element={<AdminCommunity />} />
-                  <Route path="admins" element={<AdminUsers />} />
-                  <Route path="settings" element={<Profile />} />
-                </Route>
-                
-                {/* User Routes */}
-                <Route path="/" element={<Layout />}>
-                  <Route index element={<Map />} />
-                  <Route path="home" element={<Home />} />
-                  <Route path="map" element={<Map />} />
-                  <Route path="community" element={<Community />} />
-                  <Route path="support-points" element={<SupportPoints />} />
-                  <Route path="hashtag/:hashtag" element={<HashtagPage />} />
-                  <Route path="history" element={
-                    <ProtectedRoute>
-                      <History />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="profile" element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="profile/:userId" element={
-                    <ProtectedRoute>
-                      <UserProfile />
-                    </ProtectedRoute>
-                  } />
-                </Route>
-                
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            )}
-          </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AuthProvider>
+              {shouldShowSplash ? (
+                <SplashScreen onFinish={() => setShowSplash(false)} />
+              ) : (
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  
+                  {/* Admin Routes */}
+                  <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="sos-requests" element={<AdminSOSRequests />} />
+                    <Route path="support-points" element={<AdminSupportPoints />} />
+                    <Route path="community" element={<AdminCommunity />} />
+                    <Route path="admins" element={<AdminUsers />} />
+                    <Route path="settings" element={<Profile />} />
+                  </Route>
+                  
+                  {/* User Routes */}
+                  <Route path="/" element={<Layout />}>
+                    <Route index element={<Map />} />
+                    <Route path="home" element={<Home />} />
+                    <Route path="map" element={<Map />} />
+                    <Route path="community" element={<Community />} />
+                    <Route path="support-points" element={<SupportPoints />} />
+                    <Route path="hashtag/:hashtag" element={<HashtagPage />} />
+                    <Route path="history" element={
+                      <ProtectedRoute>
+                        <History />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="profile" element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="profile/:userId" element={
+                      <ProtectedRoute>
+                        <UserProfile />
+                      </ProtectedRoute>
+                    } />
+                  </Route>
+                  
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              )}
+            </AuthProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 };
