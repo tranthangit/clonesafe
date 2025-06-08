@@ -13,7 +13,7 @@ import {
   User, 
   RotateCcw, 
   Lock, 
-  Globe, ĐỒI 
+  Globe, 
   ChevronRight,
   MoreHorizontal,
   MapPin,
