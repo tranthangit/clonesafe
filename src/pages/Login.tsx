@@ -53,7 +53,7 @@ const Login: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <Alert variant="destructive" className="animate-in fade-in-50">
+            <Alert variant="destructive\" className="animate-in fade-in-50">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
