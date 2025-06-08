@@ -228,7 +228,7 @@ const Profile: React.FC = () => {
         </div>
         <div className="text-green-100 text-sm text-center mt-1 space-y-0.5 px-4 w-full max-w-xs sm:max-w-sm md:max-w-md">
           {profile?.bio && (
-            <p className="truncate" title={profile.bio}>
+            <p className="truncate\" title={profile.bio}>
               {profile.bio}
             </p>
           )}
